@@ -1,0 +1,50 @@
+﻿<s:SurfaceWindow x:Class="SC_Demo_App.MultipleLibraryBarsFromCode"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="http://schemas.microsoft.com/surface/2008"
+    Title="SC_Demo_App"
+    >
+  <s:SurfaceWindow.Resources>
+    <ImageBrush x:Key="WindowBackground" Stretch="None" Opacity="0.6" ImageSource="pack://application:,,,/Resources/MultipleLibraryBarsFromCodeBackground.jpg"/>
+      <XmlDataProvider x:Key="Data" XPath="Groups">
+            <x:XData>
+                <Groups xmlns="">
+                    <Item GroupName="Group1" Name="Test1-1"/>
+                    <Item GroupName="Group1" Name="Test1-2"/>
+                    <Item GroupName="Group2" Name="Test2-1"/>
+                    <Item GroupName="Group2" Name="Test2-2"/>
+                    <Item GroupName="Group3" Name="Test3-1"/>
+                    <Item GroupName="Group3" Name="Test3-2"/>
+                </Groups>
+            </x:XData>
+        </XmlDataProvider>
+
+        <CollectionViewSource
+          x:Key="Source"
+          Source="{Binding Source={StaticResource Data}, XPath=Item}">
+
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="@GroupName" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <DataTemplate x:Key="BarItemTemplate">
+            <Border BorderThickness="1" BorderBrush="White" Margin="3">
+                <TextBlock Text="{Binding XPath=@Name}" Padding="3" Background="Red" />
+            </Border>
+        </DataTemplate>
+  </s:SurfaceWindow.Resources>
+
+    <Grid Background="{StaticResource WindowBackground}" >
+        <s:ScatterView Name="myScatterView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <s:ScatterViewItem Name="myScatterViewItem" Style="{StaticResource LibraryControlInScatterViewItemContentStyle}" Orientation="0.0" Center="400,500">
+              <s:SurfaceButton ContactEnter="addLibraryBar_ContactDown">Click to add a new library bar</s:SurfaceButton>
+            </s:ScatterViewItem>
+      
+        </s:ScatterView>
+    </Grid>
+    
+    <!--<StackPanel Name="myStackPanel">
+        <s:SurfaceButton Name="addLibraryBar" Click="addLibraryBar_Click" ContactDown="addLibraryBar_ContactDown">Click to add a new library bar</s:SurfaceButton>
+    </StackPanel>-->
+</s:SurfaceWindow>

@@ -1,0 +1,179 @@
+﻿<s:SurfaceWindow x:Class="SC_Demo_App.dragDrop"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="http://schemas.microsoft.com/surface/2008"
+    xmlns:local="clr-namespace:SC_Demo_App"
+    xmlns:sc="clr-namespace:SC_Demo_App"
+    Title="SC_Demo_App"
+    >
+    <s:SurfaceWindow.Resources>
+        <!-- Background -->
+        <ImageBrush x:Key="WindowBackground" Stretch="None" Opacity="0.6" ImageSource="pack://application:,,,/Resources/WindowBackground.jpg"/>
+        <XmlDataProvider x:Key="Data" XPath="Groups">
+            <x:XData>
+                <Groups xmlns="">
+                    <Item GroupName="Group1" Name="Test1-1"/>
+                    <Item GroupName="Group1" Name="Test1-2"/>
+                    <Item GroupName="Group2" Name="Test2-1"/>
+                    <Item GroupName="Group2" Name="Test2-2"/>
+                    <Item GroupName="Group3" Name="Test3-1"/>
+                    <Item GroupName="Group3" Name="Test3-2"/>
+                </Groups>
+            </x:XData>
+        </XmlDataProvider>
+
+        <!-- ShoppingList content -->
+        <XmlDataProvider x:Key="ShoppingListData" XPath="Root">
+            <x:XData>
+                <Root xmlns="">
+                    <Entry Name="Age Of Empires 3"                         Image="\Resources\01.jpg" />
+                    <Entry Name="Age Of Mythology"                         Image="\Resources\02.jpg" />
+                    <Entry Name="Dungeon Siege 2"                          Image="\Resources\03.jpg" />
+                    <Entry Name="Microsoft Flight Simulator 2004"          Image="\Resources\04.jpg" />
+                    <Entry Name="Halo"                                     Image="\Resources\05.jpg" />
+                    <Entry Name="Halo 2"                                   Image="\Resources\06.jpg" />
+                    <Entry Name="Mech Warrior 4: Clan"                     Image="\Resources\07.jpg" />
+                    <Entry Name="Mech Warrior 4: Inner Sphere"             Image="\Resources\08.jpg" />
+                    <Entry Name="Mech Warrior 4: Mercenaries"              Image="\Resources\09.jpg" />
+                    <Entry Name="Mech Warrior 4: Vengeance"                Image="\Resources\10.jpg" />
+                    <Entry Name="Rise Of Nations: Rise of Legends"         Image="\Resources\11.jpg" />
+                    <Entry Name="Rise Of Nations: Thrones and Patriots"    Image="\Resources\12.jpg" />
+                    <Entry Name="Shadowrun"                                Image="\Resources\13.jpg" />
+                    <Entry Name="Zoo Tycoon Complete Collection"           Image="\Resources\14.jpg" />
+                    <Entry Name="Zoo Tycoon"                               Image="\Resources\15.jpg" />
+                    <Entry Name="Zoo Tycoon 2"                             Image="\Resources\16.jpg" />
+                </Root>
+            </x:XData>
+        </XmlDataProvider>
+
+        <!-- Brush for ListBox -->
+        <LinearGradientBrush x:Key="ShoppingListBackgroundBrush" EndPoint="1,0" StartPoint="0,0">
+            <GradientStop Color="#FFA4B4BD" Offset="0"/>
+            <GradientStop Color="#FFDFE9EE" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- Brush for ListBoxItem border -->
+        <LinearGradientBrush x:Key="ShoppingListItemBorderBrush" EndPoint="0.5,0" StartPoint="0.5,1">
+            <GradientStop Color="#19000000" Offset="0.269"/>
+            <GradientStop Color="#00000000" Offset="1"/>
+        </LinearGradientBrush>
+
+        
+        <!-- List Style -->
+        <Style x:Key="ShoppingListStyle" TargetType="{x:Type s:SurfaceListBox }">
+            <Style.Resources>
+                <!-- Brush for selected ListBoxItems -->
+                <LinearGradientBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="#33000000" Offset="0"/>
+                    <GradientStop Color="#00000000" Offset="1"/>
+                </LinearGradientBrush>
+            </Style.Resources>
+            <Setter Property="Background" Value="{StaticResource ShoppingListBackgroundBrush}"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="Height" Value="135"/>
+            <Setter Property="ItemTemplateSelector">
+                <Setter.Value>
+                    <sc:ShoppingListTemplateSelector>
+                        <sc:ShoppingListTemplateSelector.NormalItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="5" RenderTransformOrigin="0.5, 0.5">
+                                    <Image Source="{Binding XPath=@Image}" Height="100" Width="100" />
+                                    <TextBlock Text="{Binding XPath=@Name}" Foreground="White" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </sc:ShoppingListTemplateSelector.NormalItemTemplate>
+                        <sc:ShoppingListTemplateSelector.StartingItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <StackPanel Margin="5" RenderTransformOrigin="0.5, 0.5">
+                                        <Image Source="{Binding XPath=@Image}" Height="100" Width="100" />
+                                        <TextBlock Text="{Binding XPath=@Name}" Foreground="White" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+                                    <Image HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="-24,-4,0,-4" Source="\Resources\Separator.png" />
+                                </Grid>
+                            </DataTemplate>
+                        </sc:ShoppingListTemplateSelector.StartingItemTemplate>
+                    </sc:ShoppingListTemplateSelector>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <s:SurfaceScrollViewer Background="{TemplateBinding Background}" 
+                                   VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Hidden" CanContentScroll="True">
+                            <sc:LoopingPanel IsItemsHost="True"/>
+                        </s:SurfaceScrollViewer>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <CollectionViewSource
+          x:Key="Source"
+          Source="{Binding Source={StaticResource Data}, XPath=Item}">
+
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="@GroupName" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <DataTemplate x:Key="BarItemTemplate">
+            <Border BorderThickness="1" BorderBrush="White" Margin="3">
+                <StackPanel>
+                    <TextBlock Text="{Binding XPath=@Name}" Padding="3" Background="Red" />
+                    <Image Source="{Binding XPath=@Image}" Height="100" Width="100" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        
+        <!-- Base style used by LibraryStackItem in LibraryStack and ScatterViewItem in ScatterLayer. -->
+        <Style x:Key="BaseItemStyle" TargetType="{x:Type s:SurfaceContentControl}">
+            <Setter Property="MaxHeight" Value="300" />
+            <Setter Property="MinHeight" Value="140" />
+            <Setter Property="MaxWidth" Value="214" />
+            <Setter Property="MinWidth" Value="100" />
+        </Style>
+        
+        <!--Style for each data item on ScatterLayer and the cursor being dragged -->
+        <Style x:Key="ScatterItemStyle" BasedOn="{StaticResource BaseItemStyle}" TargetType="{x:Type s:ScatterViewItem}">
+            <Setter Property="Width" Value="500" />
+            <Setter Property="Height" Value="800" />
+            <Setter Property="Background" Value="{x:Null}" />
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <!--<Image Source="{Binding XPath=@Image}" />-->
+                        <sc:BookControl></sc:BookControl>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+    </s:SurfaceWindow.Resources>
+
+
+    <Grid Background="{StaticResource WindowBackground}" >
+        <!--<s:ScatterView HorizontalAlignment="Stretch" VerticalAlignment="Stretch">-->
+        <local:DragDropScatterView x:Name="ScatterLayer" Background="Transparent" ItemContainerStyle="{StaticResource ScatterItemStyle}" >
+            <s:ScatterViewItem Style="{StaticResource LibraryControlInScatterViewItemContentStyle}" Orientation="0.0" Center="400,500">
+                <s:LibraryBar
+                        Name="ShoppingList"
+                        Height="250" Width="860"
+                        ItemsSource="{Binding Source={StaticResource ShoppingListData}, XPath=Entry}"
+                        ItemTemplate="{StaticResource BarItemTemplate}"
+                        Rows="1"  AllowDrop="False" 
+                          s:SurfaceDragDrop.DragCompleted="OnShoppingListDragCompleted"
+                          PreviewContactDown="OnShoppingListPreviewContactDown"
+                          PreviewContactChanged="OnShoppingListPreviewContactChanged"
+                          PreviewContactUp="OnShoppingListPreviewContactUp"
+                          PreviewMouseLeftButtonDown="OnShoppingListPreviewMouseLeftButtonDown"
+                          PreviewMouseMove="OnShoppingListPreviewMouseMove"
+                          PreviewMouseLeftButtonUp="OnShoppingListPreviewMouseLeftButtonUp"
+                      />
+
+        </s:ScatterViewItem>
+        </local:DragDropScatterView>
+    </Grid>
+</s:SurfaceWindow>

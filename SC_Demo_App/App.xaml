@@ -1,0 +1,22 @@
+﻿<Application x:Class="SC_Demo_App.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    StartupUri="Playground.xaml"
+    >
+    <Application.Resources>
+      <ResourceDictionary>
+        <ResourceDictionary.MergedDictionaries>
+          <ResourceDictionary Source="/Microsoft.Surface.Presentation.Generic;v1.0.0.0;31bf3856ad364e35;component/themes\generic.xaml"/>
+          <ResourceDictionary Source="Shared/LibraryControlResourceDictionary.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/Brushes.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/Transforms.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/Images.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/GlassButton.xaml" />
+                <ResourceDictionary Source="Resources/Dictionaries/SurfaceGlassButton.xaml" />
+            
+            </ResourceDictionary.MergedDictionaries>
+      </ResourceDictionary>
+    </Application.Resources>
+</Application>
+
+

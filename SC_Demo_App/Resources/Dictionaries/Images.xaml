@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--<Image x:Key="lasIG_img" Source="C:\WPF\sc_wpf_window\sc_wpf_window\Resources\Images\lasIguanas040609.jpg" />
+
+    <Image x:Key="mainLogo_bot_img" Source="pack://application:,,,/Resources/Images/logo_fix.jpg" />
+    <Image x:Key="mainLogo_top_img" Source="pack://application:,,,/Resources/Images/logo_fix.jpg" />-->
+    
+</ResourceDictionary>

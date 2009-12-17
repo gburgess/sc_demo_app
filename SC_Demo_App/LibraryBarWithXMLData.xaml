@@ -1,0 +1,63 @@
+﻿<s:SurfaceWindow x:Class="SC_Demo_App.LibraryBarWithXMLData"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="http://schemas.microsoft.com/surface/2008"
+    Title="SC_Demo_App"
+    >
+  <s:SurfaceWindow.Resources>
+    <ImageBrush x:Key="WindowBackground" Stretch="None" Opacity="0.6" ImageSource="pack://application:,,,/Resources/LibraryBarWithXMLDataBackground.jpg"/>
+
+        <XmlDataProvider x:Key="Data" XPath="Groups">
+            <x:XData>
+                <Groups xmlns="">
+                    <Item GroupName="Group1" Name="Test1-1"/>
+                    <Item GroupName="Group1" Name="Test1-2"/>
+                    <Item GroupName="Group2" Name="Test2-1"/>
+                    <Item GroupName="Group2" Name="Test2-2"/>
+                    <Item GroupName="Group3" Name="Test3-1"/>
+                    <Item GroupName="Group3" Name="Test3-2"/>
+                </Groups>
+            </x:XData>
+        </XmlDataProvider>
+
+        <CollectionViewSource
+          x:Key="Source"
+          Source="{Binding Source={StaticResource Data}, XPath=Item}">
+
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="@GroupName" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+
+        <DataTemplate x:Key="BarItemTemplate">
+            <Border BorderThickness="1" BorderBrush="White" Margin="3">
+                <TextBlock Text="{Binding XPath=@Name}" Padding="3" Background="Red" />
+            </Border>
+        </DataTemplate>
+    </s:SurfaceWindow.Resources>
+
+  <Grid Background="{StaticResource WindowBackground}" >
+        <s:ScatterView HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <s:ScatterViewItem  Style="{StaticResource LibraryControlInScatterViewItemContentStyle}" Orientation="0.0" Center="400,500">
+                <StackPanel Width="860" Height="250" Orientation="Vertical" VerticalAlignment="Center">
+                    <s:SurfaceButton Width="100">CLOSE</s:SurfaceButton>
+                <s:LibraryBar
+                    Name="MainLibraryBar"
+                    Height="250" Width="860"
+                    ItemsSource="{Binding Source={StaticResource Source}}"
+                    ItemTemplate="{StaticResource BarItemTemplate}"
+                    Rows="1"  AllowDrop="True"  />
+                    
+                    
+                </StackPanel>
+            </s:ScatterViewItem>
+            
+            <s:ScatterViewItem>
+                <StackPanel>
+                    <s:SurfaceButton>CLOSE</s:SurfaceButton>
+                    <s:SurfaceButton>CLOSE</s:SurfaceButton>
+                </StackPanel>
+            </s:ScatterViewItem>
+        </s:ScatterView>
+    </Grid>
+</s:SurfaceWindow>
